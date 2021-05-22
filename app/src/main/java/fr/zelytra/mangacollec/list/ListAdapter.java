@@ -1,18 +1,25 @@
 package fr.zelytra.mangacollec.list;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.zelytra.mangacollec.R;
+import fr.zelytra.mangacollec.api.Movie;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
-    private List<String> values;
+    private List<Movie> values;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -21,6 +28,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         // each data item is just a string in this case
         public TextView txtHeader;
         public TextView txtFooter;
+        public ImageView imgHeader;
         public View layout;
 
         public ViewHolder(View v) {
@@ -28,10 +36,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             layout = v;
             txtHeader = v.findViewById(R.id.firstLine);
             txtFooter = v.findViewById(R.id.secondLine);
+            imgHeader = v.findViewById(R.id.icon);
         }
     }
 
-    public void add(int position, String item) {
+    public void add(int position, Movie item) {
         values.add(position, item);
         notifyItemInserted(position);
     }
@@ -42,7 +51,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListAdapter(List<String> myDataset) {
+    public ListAdapter(List<Movie> myDataset) {
         values = myDataset;
     }
 
@@ -63,11 +72,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        final String name = values.get(position);
-        holder.txtHeader.setText(name);
-        holder.txtHeader.setOnClickListener(v -> remove(position));
+        final Movie movie = values.get(position);
+        holder.txtHeader.setText(movie.getTitle());
+        new DownloadImageTask(holder.imgHeader).execute("https://image.tmdb.org/t/p/original/"+movie.getPoster_path());
+        holder.imgHeader.setOnClickListener(v -> {
 
-        holder.txtFooter.setText("Footer: " + name);
+        });
+        holder.txtFooter.setText(movie.getRelease_date());
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -75,4 +87,31 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public int getItemCount() {
         return values.size();
     }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
 }
+
+

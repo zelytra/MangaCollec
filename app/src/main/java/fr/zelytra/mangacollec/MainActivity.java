@@ -19,7 +19,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,28 +32,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        showList();
         Log.d("app", "making api call");
         apiCall();
     }
 
-    private void showList() {
+    private void showList(List<Movie> movieList) {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-
-        List<String> input = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            input.add("Test" + i);
-        }
-
         layoutManager = new GridLayoutManager(this, 2);
 
         recyclerView.setLayoutManager(layoutManager);
-        listAdapter = new ListAdapter(input);
+        listAdapter = new ListAdapter(movieList);
         recyclerView.setAdapter(listAdapter);
     }
 
@@ -78,11 +70,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RestMovieResponse> call, Response<RestMovieResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Movie> movieList = response.body().getResults();
+                    showList(response.body().getResults());
                     Toast.makeText(MainActivity.this, "API succed", Toast.LENGTH_SHORT).show();
-                    for (Movie movie:movieList){
-                        Log.d("app",movie.getTitle());
-                    }
+
                 }else {
                     Toast.makeText(MainActivity.this, "API failed", Toast.LENGTH_SHORT).show();
                 }
