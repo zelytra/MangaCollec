@@ -26,6 +26,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static MainActivity instance;
+
     private RecyclerView recyclerView;
     private ListAdapter listAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        instance = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sharedPreferences = getSharedPreferences("moviesList", Context.MODE_PRIVATE);
@@ -112,4 +115,9 @@ public class MainActivity extends AppCompatActivity {
                 .apply();
 
     }
+
+    public static MainActivity getInstance(){
+        return instance;
+    }
+
 }

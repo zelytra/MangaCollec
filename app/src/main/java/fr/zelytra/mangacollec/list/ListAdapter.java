@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
+import fr.zelytra.mangacollec.MainActivity;
 import fr.zelytra.mangacollec.R;
 import fr.zelytra.mangacollec.api.Movie;
 import org.jetbrains.annotations.NotNull;
@@ -76,7 +77,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         holder.txtHeader.setText(movie.getTitle());
         new DownloadImageTask(holder.imgHeader).execute("https://image.tmdb.org/t/p/original/"+movie.getPoster_path());
         holder.imgHeader.setOnClickListener(v -> {
-
+            MainActivity.getInstance().setContentView(R.layout.more_info);
         });
         holder.txtFooter.setText(movie.getRelease_date());
 

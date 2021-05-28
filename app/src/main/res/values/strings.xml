@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">MangaCollec</string>
+    <string name="app_name">MovieNews</string>
+    <string name="movieTitle">movieName</string>
+    <string name="rate">4.5/10</string>
+    <string name="release">Release: 20/24/2021</string>
+    <string name="language">Language : EN</string>
 </resources>
