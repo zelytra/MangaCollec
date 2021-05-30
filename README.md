@@ -25,10 +25,9 @@ Cette application à pour but d'afficher les derniers filmes sortie en box-offic
 
 ### Premier écran:
 * Affichage de la liste des films  
-![img](https://github.com/zelytra/MovieNews/blob/master/img/list.jpg)
+<img src="https://github.com/zelytra/MovieNews/blob/master/img/list.jpg" width = 300px/>
   
 ### Page de détail
-* Affichage des détails du filme sélectionné  
- 
-![img](https://github.com/zelytra/MovieNews/blob/master/img/detail.jpg)
+* Affichage des détails du filme sélectionné   
+<img src="https://github.com/zelytra/MovieNews/blob/master/img/detail.jpg" width = 300px/>
 
